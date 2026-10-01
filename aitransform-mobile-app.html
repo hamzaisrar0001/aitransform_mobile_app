@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>aiTransform Mobile App</title>
+<style>
+:root{--ink:#14172b;--bg:#f5f6fb;--line:#e3e5f0;--mut:#6b7090;--ac:#5b4bff;--ac2:#00b8a9}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font:15px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink);background:#d9dcee;display:flex;justify-content:center;min-height:100vh}
+button,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+#app{width:100%;max-width:420px;height:100vh;max-height:880px;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden;margin:auto}
+@media(min-width:500px){#app{border-radius:34px;box-shadow:0 20px 60px rgba(20,23,43,.25);border:8px solid #14172b;height:860px}}
+#scr{flex:1;overflow:auto;padding:0 18px 18px}
+.top{display:flex;align-items:center;gap:10px;padding:18px 0 12px}
+.top h1{font-size:21px;letter-spacing:-.02em;flex:1}
+.back{border:0;background:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--ac2);color:#fff;display:grid;place-items:center;font-weight:700}
+.hero{background:linear-gradient(135deg,var(--ac),#3a2fc4);color:#fff;border-radius:18px;padding:18px;margin-bottom:16px}
+.hero p{opacity:.8;font-size:13px}.hero strong{font-size:30px;display:block}
+.bar{height:6px;background:rgba(255,255,255,.25);border-radius:9px;margin:10px 0 12px;overflow:hidden}.bar i{display:block;height:100%;width:62%;background:#fff}
+.mini{border:0;background:#fff;color:var(--ac);font-weight:700;border-radius:99px;padding:7px 14px;font-size:13px}
+.srch{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#fff;margin-bottom:12px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 14px;font-size:14px;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left}
+button.card:active{transform:scale(.97)}
+.ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;margin-bottom:10px}
+.card h3{font-size:15px}.card p{color:var(--mut);font-size:12.5px;line-height:1.35;margin-top:2px}
+label{font-weight:600;font-size:14px;display:block;margin:12px 0 6px}
+textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff}
+textarea{min-height:110px;resize:none}
+.btn{width:100%;border:0;background:var(--ac);color:#fff;font-weight:700;border-radius:12px;padding:13px;margin-top:14px}
+.btn.g{background:#fff;color:var(--ink);border:1px solid var(--line);margin:0;padding:10px}
+.out{margin-top:14px;white-space:pre-wrap;min-height:60px}
+.acts{display:flex;gap:8px;margin-top:12px}.acts .btn{flex:1}
+.imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.imgs div{aspect-ratio:1;border-radius:12px;display:grid;place-items:end start;padding:8px;color:#fff;font-size:12px;font-weight:600}
+pre{background:#12142a;color:#d9dcff;padding:12px;border-radius:12px;overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace}
+.wave{display:flex;align-items:center;gap:3px;height:60px;margin:10px 0}.wave i{flex:1;background:var(--ac);border-radius:3px}
+.wave.play i{animation:b .7s ease-in-out infinite alternate}@keyframes b{to{transform:scaleY(.35)}}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:30px 12px;text-align:center;color:var(--mut);background:#fff;width:100%}
+.meter{font-size:42px;font-weight:800;color:#16a34a}
+nav{display:flex;background:#fff;border-top:1px solid var(--line);padding:8px 6px 2px}
+.pw{background:#fff;text-align:center;font-size:11px;color:var(--mut);padding:0 0 calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;border:0;background:none;color:var(--mut);font-size:12px;font-weight:600;display:grid;justify-items:center;gap:2px}
+nav button b{width:44px;height:26px;border-radius:99px;display:grid;place-items:center;font-size:11px}
+nav button.on{color:var(--ac)}nav button.on b{background:#ebe9ff}
+.plan{margin-bottom:12px}.plan h2{font-size:22px}.plan ul{padding-left:18px;color:var(--mut);font-size:14px;margin:6px 0 10px}
+.plan.hot{border:2px solid var(--ac)}
+.row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+.toast{position:absolute;bottom:86px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}.toast.on{opacity:1}
+.empty{color:var(--mut);text-align:center;padding:40px 10px}
+@media(prefers-reduced-motion:reduce){.wave.play i{animation:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="scr"></div>
+  <div class="toast" id="toast"></div>
+  <nav>
+    <button data-tab="home" class="on"><b>Ho</b>Home</button>
+    <button data-tab="tools"><b>To</b>Tools</button>
+    <button data-tab="library"><b>Li</b>Library</button>
+    <button data-tab="profile"><b>Pr</b>Profile</button>
+  </nav>
+  <div class="pw">Powered by Hamza Israr</div>
+</div>
+<script>
+const T=[
+{id:'text',n:'Text generator',c:'Create',a:'Tx',k:'#5b4bff',d:'Posts, emails and ads from a brief',t:'text',ph:'e.g. Announce our new chatbot in 3 short paragraphs'},
+{id:'article',n:'Article wizard',c:'Create',a:'Ar',k:'#7c3aed',d:'Full structured articles',t:'text',ph:'e.g. Benefits of AI for small businesses'},
+{id:'image',n:'Image generator',c:'Create',a:'Im',k:'#ec4899',d:'Describe it, get 4 options',t:'image',ph:'e.g. Lahore skyline at sunset'},
+{id:'code',n:'Code generator',c:'Create',a:'Co',k:'#0ea5e9',d:'Working code in any language',t:'code',ph:'e.g. Validate an email address'},
+{id:'voice',n:'Voiceover',c:'Create',a:'Vo',k:'#f59e0b',d:'Text to natural speech',t:'voice',ph:'Paste the script to read aloud'},
+{id:'chat',n:'AI chat',c:'Create',a:'Ch',k:'#00b8a9',d:'Ask anything, get answers',t:'text',ph:'Ask anything'},
+{id:'rewrite',n:'AI rewriter',c:'Tools',a:'Rw',k:'#16a34a',d:'Clearer, more professional text',t:'text',ph:'Paste the text to rewrite',b:'Rewrite'},
+{id:'plag',n:'Plagiarism check',c:'Tools',a:'Pc',k:'#ef4444',d:'Check how original your text is',t:'check',ph:'Paste the text to check'},
+{id:'stt',n:'Speech to text',c:'Tools',a:'St',k:'#6366f1',d:'Audio to transcript',t:'upload',acc:'audio',res:'Transcript:\n\nWelcome everyone. Today we look at how small teams can use AI to save time on writing, research and customer replies.'},
+{id:'vision',n:'AI vision',c:'Tools',a:'Vi',k:'#14b8a6',d:'Ask what is in a photo',t:'upload',acc:'photo',res:'Description:\n\nA person working at a laptop in a bright office, with a notebook and a coffee cup on the desk.'},
+{id:'isolate',n:'Voice isolator',c:'Tools',a:'Is',k:'#d946ef',d:'Remove background noise',t:'upload',acc:'audio',res:'Done. Background noise reduced by 92%. Your clean file is ready.'},
+{id:'video',n:'AI video',c:'Tools',a:'Vd',k:'#f97316',d:'Script to short video',t:'upload',acc:'script',res:'Storyboard created: 6 scenes, 38 seconds. Preview is rendering.'}
+];
+const S=document.getElementById('scr'),L=[];let cat='All',tab='home';
+const $=s=>document.querySelector(s);
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1600)};
+const tiles=l=>l.map(x=>`<button class="card" data-tool="${x.id}"><div class="ic" style="background:${x.k}">${x.a}</div><h3>${x.n}</h3><p>${x.d}</p></button>`).join('');
+function setTab(t){tab=t;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab==t));({home,tools,library,profile})[t]();S.scrollTop=0}
+function home(){S.innerHTML=`<div class="top"><h1>aiTransform</h1><div class="av">H</div></div>
+<div class="hero"><p>Credits left</p><strong>12,400</strong><div class="bar"><i></i></div><button class="mini" data-tab="profile">Upgrade plan</button></div>
+<div class="chips">${['All','Create','Tools'].map(c=>`<button class="chip ${c==cat?'on':''}" data-cat="${c}">${c}</button>`).join('')}</div>
+<div class="grid">${tiles(T.filter(x=>cat=='All'||x.c==cat))}</div>`}
+function tools(){S.innerHTML=`<div class="top"><h1>All tools</h1></div><input class="srch" id="q" placeholder="Search tools" aria-label="Search tools"><div class="grid" id="tg">${tiles(T)}</div>`;
+$('#q').oninput=e=>{const v=e.target.value.toLowerCase();$('#tg').innerHTML=tiles(T.filter(x=>(x.n+x.d).toLowerCase().includes(v)))||''}}
+function library(){S.innerHTML=`<div class="top"><h1>Library</h1></div>`+(L.length?L.map(i=>`<div class="card" style="margin-bottom:10px"><h3>${i.n}</h3><p>${i.t.slice(0,110)}</p></div>`).join(''):'<div class="empty">Nothing saved yet. Tap Save on any result.</div>')}
+const P=[['Free','$0','1,000 credits per month|10 basic tools'],['Pro','$19','50,000 credits per month|All 170+ tools|Priority speed'],['Business','$49','Unlimited credits|Team seats|API access']];
+function profile(){S.innerHTML=`<div class="top"><h1>Profile</h1><div class="av">H</div></div>
+<div class="card" style="margin-bottom:16px"><div class="row" style="padding-top:0"><span>Name</span><b>Hamza</b></div><div class="row"><span>Current plan</span><b>Free</b></div><div class="row" style="border:0;padding-bottom:0"><span>Saved items</span><b>${L.length}</b></div></div>
+<h3 style="margin-bottom:10px">Plans</h3>`+P.map((p,i)=>`<div class="card plan ${i==1?'hot':''}"><h3>${p[0]}</h3><h2>${p[1]}<small style="font-size:13px;font-weight:400"> / month</small></h2><ul>${p[2].split('|').map(l=>'<li>'+l+'</li>').join('')}</ul><button class="btn ${i==1?'':'g'}" style="margin:0" data-pick="${p[0]}">Choose ${p[0]}</button></div>`).join('')}
+function tool(id){const x=T.find(t=>t.id==id);let f='';
+if(x.t=='upload')f=`<label>Upload ${x.acc}</label><button class="drop" id="dz">Tap to choose a file</button><input type="file" id="fi" hidden>`;
+else f=`<label>${x.t=='check'?'Your text':'Your prompt'}</label><textarea id="p" placeholder="${x.ph}"></textarea>`;
+if(x.t=='text')f+=`<label>Tone</label><select><option>Friendly</option><option>Professional</option><option>Persuasive</option></select>`;
+if(x.t=='image')f+=`<label>Style</label><select><option>Photorealistic</option><option>Illustration</option><option>3D render</option></select>`;
+if(x.t=='code')f+=`<label>Language</label><select id="lang"><option>Python</option><option>JavaScript</option><option>PHP</option></select>`;
+if(x.t=='voice')f+=`<label>Voice</label><select><option>Ayesha (Urdu/English)</option><option>Ali (Urdu/English)</option><option>Emma (English)</option></select>`;
+S.innerHTML=`<div class="top"><button class="back" data-tab="${tab}" aria-label="Back">&larr;</button><h1>${x.n}</h1></div><p style="color:var(--mut)">${x.d}</p>${f}<button class="btn" id="go">${x.b||(x.t=='check'?'Check text':x.t=='upload'?'Process file':'Generate')}</button><div class="out" id="o"></div>`;
+let fn='';const fi=$('#fi');if(fi){$('#dz').onclick=()=>fi.click();fi.onchange=()=>{fn=fi.files[0]?.name||'';$('#dz').textContent=fn||'Tap to choose a file'}}
+$('#go').onclick=()=>run(x,fn)}
+const acts=`<div class="acts"><button class="btn g" data-copy>Copy</button><button class="btn g" data-save>Save</button><button class="btn g" data-regen>Redo</button></div>`;
+function type(el,s,cb){let i=0;el.textContent='';const t=setInterval(()=>{el.textContent+=s.slice(i,i+3);i+=3;if(i>=s.length){clearInterval(t);cb&&cb()}},18)}
+function run(x,fn){const o=$('#o'),p=$('#p'),v=p?p.value.trim():'';
+if(x.t!='upload'&&!v)return toast('Enter some text first');
+if(x.t=='upload'&&!fn)return toast('Choose a file first');
+o.innerHTML='<div class="empty" style="padding:20px">Working on it...</div>';
+setTimeout(()=>{
+if(x.t=='text'){o.innerHTML='<div id="tt"></div>';type($('#tt'),x.id=='rewrite'?'Clearer version:\n\n'+v.replace(/\s+/g,' ')+'\n\nTighter sentences, consistent tone, main point first.':'Draft for "'+v+'":\n\nAI is changing how teams work, and the best way to start is small. Pick one repeated task, let the tool write the first draft, and keep a person in charge of the final result.\n\nWith aiTransform you can go from idea to finished copy in minutes.',()=>o.insertAdjacentHTML('beforeend',acts))}
+else if(x.t=='image'){const g=['#5b4bff,#00b8a9','#ec4899,#f59e0b','#0ea5e9,#7c3aed','#14b8a6,#1b1f3a'];o.innerHTML='<div class="imgs">'+g.map((c,i)=>`<div style="background:linear-gradient(135deg,${c})">Option ${i+1}</div>`).join('')+'</div>'+acts}
+else if(x.t=='code'){const c={Python:'import re\n\ndef is_valid_email(email):\n    p = r"^[\\w.+-]+@[\\w-]+\\.[\\w.]+$"\n    return re.match(p, email) is not None',JavaScript:'const isValidEmail = (e) =>\n  /^[\\w.+-]+@[\\w-]+\\.[\\w.]+$/.test(e);',PHP:'function isValidEmail($e) {\n  return filter_var($e, FILTER_VALIDATE_EMAIL) !== false;\n}'};o.innerHTML='<pre id="cd"></pre>'+acts;$('#cd').textContent=c[$('#lang').value]}
+else if(x.t=='voice'){o.innerHTML='<p>Audio ready (0:24)</p><div class="wave" id="w">'+Array.from({length:32},(_,i)=>`<i style="height:${16+Math.abs(Math.sin(i*1.3))*40}px"></i>`).join('')+'</div><div class="acts"><button class="btn g" id="pl">Play</button><button class="btn g" data-save>Save</button><button class="btn g" data-dl>Download</button></div>'}
+else if(x.t=='check'){const s=Math.min(98,70+v.length%28);o.innerHTML=`<p>Originality score</p><div class="meter">${s}%</div><div class="bar" style="background:var(--line)"><i style="width:${s}%;background:var(--ac2)"></i></div><p style="color:var(--mut)">${100-s}% matches found in 3 sources. Reword the matching lines.</p>`+acts}
+else{o.innerHTML='<div id="tt"></div>';type($('#tt'),x.res,()=>o.insertAdjacentHTML('beforeend',acts))}},700)}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.tab)setTab(b.dataset.tab);
+else if(b.dataset.tool)tool(b.dataset.tool);
+else if(b.dataset.cat){cat=b.dataset.cat;home()}
+else if(b.dataset.copy){navigator.clipboard&&navigator.clipboard.writeText($('#o').innerText).catch(()=>{});toast('Copied')}
+else if(b.dataset.save!==undefined){L.push({n:$('h1').textContent,t:$('#o').innerText});toast('Saved to library')}
+else if(b.dataset.regen!==undefined)$('#go').click();
+else if(b.dataset.dl!==undefined)toast('Download started');
+else if(b.dataset.pick)toast(b.dataset.pick+' plan selected');
+else if(b.id=='pl'){const w=$('#w').classList.toggle('play');b.textContent=w?'Pause':'Play'}});
+home();
+</script>
+</body>
+</html>
